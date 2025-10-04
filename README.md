@@ -65,27 +65,6 @@ git branch -M main
 git push -u origin main
 ```
 
-## Suggested next steps
-
-- Add a short `DESCRIPTION` in `package.json` and fill `author`.
-- Consider updating `main` in `package.json` to `app.js` (currently set to `index.js`) or create `index.js` that `require('./app')`.
-- Add a license (`LICENSE` file) if you intend to make this open source (MIT is popular).
-- Add GitHub Actions for CI (install dependencies and run lint/tests).
-- Protect the `main` branch via GitHub branch protection rules once CI is in place.
-
-## Helpful commands
-
-```powershell
-# show status
-git status
-
-# show recent commits
-git log --oneline --decorate --graph -n 20
-```
-
----
-
-If you want, I can also:
 
 - Add a minimal `app.js` starter (Express server) so `npm start` runs out-of-the-box.
 - Update `package.json` `main` to `app.js`.
