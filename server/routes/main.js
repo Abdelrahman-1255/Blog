@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import Post from "../models/post.js";
+import { sendContactEmail } from "../Helpers/mailer.js";
 
 router.get("/", async (req, res) => {
   try {
@@ -89,15 +90,28 @@ router
     };
     res.render("contact", { locals, currentRoute: "/contact" });
   })
-  .post((req, res) => {
+  .post(async (req, res) => {
     const { name, email, message } = req.body;
-    res.render("contact", {
-      locals: {
-        title: "Contact",
-        description: "Thank you for your message!",
-      },
-      currentRoute: "/contact",
-    });
+    const locals = {
+      title: "Contact",
+      description: "Get in touch with us",
+    };
+    try {
+      await sendContactEmail({ name, email, message });
+      console.log("Email sent successfully");
+      return res.render("contact", {
+        locals: { ...locals, description: "Thank you for your message!" },
+        currentRoute: "/contact",
+        success: "Your message has been sent successfully.",
+      });
+    } catch (err) {
+      console.error("Contact form email error:", err);
+      return res.status(500).render("contact", {
+        locals,
+        currentRoute: "/contact",
+        error: "Sorry, we couldn't send your message. Please try again later.",
+      });
+    }
   });
 
 export default router;
